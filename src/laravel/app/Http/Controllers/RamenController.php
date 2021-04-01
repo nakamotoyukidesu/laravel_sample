@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Ramen;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class RamenController extends Controller
@@ -19,6 +20,7 @@ class RamenController extends Controller
             }
             $ramen->save();
         }
+        return redirect('/show');
 //        redirect('/');
 //        $json_array = File::get($request->json);
 //        Log::info($json_array);
@@ -36,5 +38,15 @@ class RamenController extends Controller
 //        $ramen->address = $request->address;
 //        $ramen->timestamps = false;
 //        $ramen->save();
+    }
+
+    public function show(){
+        $ramen = new Ramen();
+        $ramen_data = $ramen->all();
+        return view('ramen.show',compact('ramen_data'));
+    }
+
+    public function delete(){
+        DB::table('ramens')->truncate();
     }
 }

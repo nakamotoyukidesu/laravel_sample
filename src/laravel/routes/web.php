@@ -16,10 +16,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::post('/sample','RamenController@index');
-Route::get('/sample',function (){
-    return view('sample');
+Route::post('/save','RamenController@index');
+Route::get('/save',function (){
+    return view('ramen.save');
 });
+Route::get('/show','RamenController@show');
 Route::post('/hash','HashController@index');
 Route::get('/hash',function (){
     return view('hash');

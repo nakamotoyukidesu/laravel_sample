@@ -6,7 +6,7 @@
     <div class="panel-body">
 
     <!-- 新タスクフォーム -->
-        <form action="{{ url('sample') }}" method="POST" class="form-horizontal" enctype="multipart/form-data">
+        <form action="{{ url('/save') }}" method="POST" class="form-horizontal" enctype="multipart/form-data">
         {{ csrf_field() }}
 
         <!-- タスク名 -->

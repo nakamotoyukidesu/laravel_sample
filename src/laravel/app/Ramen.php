@@ -15,4 +15,6 @@ class Ramen extends Model
         'query',
         'account_name',
     ];
+
+
 }

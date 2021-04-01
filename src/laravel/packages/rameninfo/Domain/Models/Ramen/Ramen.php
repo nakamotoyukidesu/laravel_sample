@@ -1,0 +1,1 @@
+<?phpdeclare(strict_types=1);final class Ramen{    private $ramen_id;    private $twitter_id;    private $name;    private $category;    private $image_url;    private $address;    private $query;    private $account_name;}
