@@ -25,3 +25,5 @@ Route::post('/hash','HashController@index');
 Route::get('/hash',function (){
     return view('hash');
 });
+
+Route::get('/sample','SampleController@index');

@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use rameninfo\Domain\Models\Ramen\RamenRepository;
+use rameninfo\Infrastructure\Repositories\Domain\Eloquent\EloquentRamenRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,7 +15,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind(RamenRepository::class, EloquentRamenRepository::class);
     }
 
     /**

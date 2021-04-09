@@ -14,14 +14,11 @@ class CreateRamensTable extends Migration
     public function up()
     {
         Schema::create('ramens', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('twitter_id');
+            $table->uuid('ramen_id');
             $table->string('name');
             $table->string('category');
             $table->string('image_url');
             $table->string('address');
-            $table->string('query');
-            $table->string('account_name');
             $table->timestamps();
         });
     }

@@ -5,7 +5,20 @@ declare(strict_types=1);
 namespace rameninfo\Infrastructure\Eloquent;
 
 
-final class EloquentRamen
+use Illuminate\Database\Eloquent\Model;
+
+final class EloquentRamen extends Model
 {
+    protected $table = 'ramens';
+
+    protected $primaryKey = 'ramen_id';
+
+    protected $fillable = [
+        'ramen_id',
+        'name',
+        'category',
+        'image_url',
+        'address',
+    ];
 
 }
