@@ -2,7 +2,8 @@
 
 declare(strict_types=1);
 
-namespace packages\rameninfo\Application\Controller\Ramen;
+namespace package\rameninf\Applicatio\Controlle\Ramen;
+
 
 
 use Illuminate\Http\JsonResponse;
@@ -11,7 +12,7 @@ use rameninfo\Application\Usecases\Ramen\SaveRamen;
 
 final class RamenSaveController
 {
-    public function __invoke(RamenSaveRequest $request, SaveRamen $saveRamen)
+    public function __invoke(RamenSaveRequest $request, SaveRamen $saveRamen): JsonResponse
     {
         $ramens = array();
         foreach ($request->saveRamen() as $ramen){

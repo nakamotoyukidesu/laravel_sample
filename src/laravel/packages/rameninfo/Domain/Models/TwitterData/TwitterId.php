@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace twitterinfo\Domain\Models\TwitterData;
+namespace rameninfo\Domain\Models\TwitterData;
 
 
 final class TwitterId

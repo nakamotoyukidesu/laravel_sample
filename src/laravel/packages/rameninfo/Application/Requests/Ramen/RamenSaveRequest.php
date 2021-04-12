@@ -6,7 +6,7 @@ namespace rameninfo\Application\Requests\Ramen;
 
 
 use Illuminate\Foundation\Http\FormRequest;
-use Psy\Util\Str;
+use Illuminate\Support\Str;
 use rameninfo\Application\Requests\ApiRequest;
 use rameninfo\Application\Requests\Requests;
 use rameninfo\Domain\Models\Ramen\Ramen;
@@ -27,17 +27,18 @@ final class RamenSaveRequest extends ApiRequest implements Requests
 
     public function saveRamen():array
     {
-        if ($this->file('json') != null) {
-            return [new Ramen(
+        $ramens = array();
+        if ($this->file('json') == null) {
+            $ramens += new Ramen(
                 RamenId::of((string)Str::uuid()),
                 RamenName::of($this->name),
                 RamenCategory::of($this->category),
                 RamenImage::of($this->image_url),
                 RamenAddress::of($this->address)
-            )];
+            );
+            return $ramens;
         }else{
             $ramen_array = json_decode(file_get_contents($this->file('json')));
-            $ramens = array();
             foreach ($ramen_array as $ramen){
                 $ramens += new Ramen(
                     RamenId::of((string)Str::uuid()),
