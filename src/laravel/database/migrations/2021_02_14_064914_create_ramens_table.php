@@ -19,7 +19,7 @@ class CreateRamensTable extends Migration
             $table->string('category');
             $table->string('image_url');
             $table->string('address');
-            $table->timestamps();
+            $table->timestamps()->format("YYYY-MM-DD");
         });
     }
 

@@ -11,6 +11,8 @@
 |
 */
 
+use App\Http\Controllers\HashController;
+use App\Http\Controllers\RamenController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers;
 use rameninfo\Application\Controller\Ramen\RamenSaveController;
@@ -22,10 +24,10 @@ Route::post('/save', RamenSaveController::class);
 Route::get('/save',function (){
     return view('ramen.save');
 });
-Route::get('/show','RamenController@show');
-Route::post('/hash','HashController@index');
+Route::get('/show',[RamenController::class,'show']);
+Route::post('/hash',[HashController::class,'index']);
 Route::get('/hash',function (){
     return view('hash');
 });
 
-Route::get('/sample','SampleController@index');
+

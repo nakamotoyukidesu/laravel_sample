@@ -30,7 +30,7 @@ final class RamenSaveRequest extends ApiRequest implements Requests
     public function saveRamen(): array
     {
         $ramens = array();
-        if ($this->file('json') == null) {
+        if (!$this->hasFile('json_array')) {
             $ramens = [];
             $ramen = new Ramen(
                 RamenId::of((string)Str::uuid()),
@@ -42,21 +42,17 @@ final class RamenSaveRequest extends ApiRequest implements Requests
             $ramens[$ramen->ramen_id()->value()] = $ramen;
             return $ramens;
         }else{
-            Log::info('ここからファイル読み込み');
-            Log::info((string)$this->file('json'));
-//            $json_php = file_get_contents($_FILES['json']);
-//            $ramen_array = json_decode($_FILES['json']);
-            dd($this->file('json'));
-            $ramen_array = $_FILES['json'];
-            dd($ramen_array);
+            $json_php = file_get_contents($this->file('json_array')->getRealPath());
+            $ramen_array = json_decode($json_php);
             foreach ($ramen_array as $ramen){
-                $ramens += new Ramen(
+                $ramen_one = new Ramen(
                     RamenId::of((string)Str::uuid()),
                     RamenName::of($ramen->name),
                     RamenCategory::of($ramen->category),
                     RamenImage::of($ramen->image_url),
                     RamenAddress::of($ramen->address)
                 );
+                $ramens[$ramen_one->ramen_id()->value()]  = $ramen_one;
             }
             return $ramens;
         }
