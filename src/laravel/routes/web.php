@@ -12,11 +12,13 @@
 */
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers;
+use rameninfo\Application\Controller\Ramen\RamenSaveController;
 
 Route::get('/', function () {
     return view('welcome');
 });
-Route::post('/save','RamenController@index');
+Route::post('/save', RamenSaveController::class);
 Route::get('/save',function (){
     return view('ramen.save');
 });

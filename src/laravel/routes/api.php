@@ -1,10 +1,9 @@
 <?php
 
-use App\Http\Controllers\TestController;
-use Bootstrap\Test2Controller;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use package\rameninf\Applicatio\Controlle\Ramen\RamenSaveController;
+use rameninfo\Application\Controller\Ramen\RamenSaveController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +20,6 @@ use package\rameninf\Applicatio\Controlle\Ramen\RamenSaveController;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::get('/test', TestController::class);
 Route::post('/save', RamenSaveController::class)->name('ramen.save');
 
 

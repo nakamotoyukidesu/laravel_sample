@@ -15,7 +15,8 @@ class RouteServiceProvider extends ServiceProvider
      * @var string
      */
 
-    protected $namespace = 'App\Http\Controllers';
+//    protected $namespace = 'App\Http\Controllers';
+    protected $namespace = '';
     protected $namespaceApi = '';
 
     /**
@@ -69,7 +70,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         Route::prefix('api')
              ->middleware('api')
-//             ->namespace($this->namespaceApi)
+             ->namespace($this->namespaceApi)
              ->group(base_path('routes/api.php'));
     }
 }
