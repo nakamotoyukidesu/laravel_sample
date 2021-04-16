@@ -17,7 +17,6 @@ final class RamenSaveController
     {
         $ramens = [];
         foreach ($request->saveRamen() as $ramen){
-            var_dump($ramen);
             $ramens[$ramen->ramen_id()->value()] = $saveRamen($ramen);
         }
         return $this->response($ramens);
@@ -36,8 +35,6 @@ final class RamenSaveController
                 'image_url' => $ramen->image_url()->value(),
                 'address' => $ramen->address()->value(),
             ];
-            echo "\nramen_array出力";
-            var_dump($ramen_array);
         }
         return response()->json($ramen_array);
     }

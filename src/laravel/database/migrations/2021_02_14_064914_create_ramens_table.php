@@ -14,12 +14,12 @@ class CreateRamensTable extends Migration
     public function up()
     {
         Schema::create('ramens', function (Blueprint $table) {
-            $table->uuid('ramen_id');
+            $table->string('ramen_id')->primary();
             $table->string('name');
             $table->string('category');
             $table->string('image_url');
             $table->string('address');
-            $table->timestamps()->format("YYYY-MM-DD");
+            $table->timestamps();
         });
     }
 

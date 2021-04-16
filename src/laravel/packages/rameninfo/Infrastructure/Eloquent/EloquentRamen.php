@@ -13,6 +13,10 @@ final class EloquentRamen extends Model
 
     protected $primaryKey = 'ramen_id';
 
+    protected $casts = [
+        "ramen_id" => "string",
+    ];
+
     protected $fillable = [
         'ramen_id',
         'name',

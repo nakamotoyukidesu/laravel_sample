@@ -6,6 +6,7 @@ namespace rameninfo\Infrastructure\Repositories\Domain\Eloquent;
 
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use rameninfo\Domain\Models\Ramen\Ramen;
 use rameninfo\Domain\Models\Ramen\RamenId;
 use rameninfo\Domain\Models\Ramen\RamenRepository;
@@ -41,9 +42,19 @@ final class EloquentRamenRepository implements RamenRepository
     public function show()
     {
         $ramens = EloquentRamen::all();
+        $ramen_array = [];
+        foreach ($ramens as $ramen)
+        {
+            Log::info(gettype($ramen->ramen_id));
+            Log::info((string)$ramen->ramen_id);
+            $ramen_array[$ramen->ramen_id] = [
+                $ramen
+            ];
+        }
+
         return [
             'ramens' => [
-                $ramens
+                $ramen_array
             ]
         ];
     }
