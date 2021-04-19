@@ -5,9 +5,6 @@ declare(strict_types=1);
 namespace rameninfo\Application\Requests\Ramen;
 
 
-use ArrayObject;
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use rameninfo\Application\Requests\ApiRequest;
 use rameninfo\Application\Requests\Requests;
@@ -23,8 +20,7 @@ final class RamenSaveRequest extends ApiRequest implements Requests
 
     public function rules(): array
     {
-        return [
-        ];
+        return [];
     }
 
     public function saveRamen(): array

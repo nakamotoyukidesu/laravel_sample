@@ -45,8 +45,6 @@ final class EloquentRamenRepository implements RamenRepository
         $ramen_array = [];
         foreach ($ramens as $ramen)
         {
-            Log::info(gettype($ramen->ramen_id));
-            Log::info((string)$ramen->ramen_id);
             $ramen_array[$ramen->ramen_id] = [
                 $ramen
             ];
@@ -61,11 +59,25 @@ final class EloquentRamenRepository implements RamenRepository
 
     public function delete(string $ramenId = null)
     {
-        if($ramenId == null){
+        if(!$ramenId == null){
             $ramen = EloquentRamen::find($ramenId);
             $ramen->delete();
         }else{
-            DB::table('ramens')->truncate();
+            DB::table('ramens')->delete();
         }
+        $ramens = EloquentRamen::all();
+        $ramen_array = [];
+        foreach ($ramens as $ramen)
+        {
+            $ramen_array[$ramen->ramen_id] = [
+                $ramen
+            ];
+        }
+
+        return [
+            'ramens' => [
+                $ramen_array
+            ]
+        ];
     }
 }
