@@ -24,7 +24,7 @@ Route::post('/save', RamenSaveController::class);
 Route::get('/save',function (){
     return view('ramen.save');
 });
-Route::get('/show',[RamenController::class,'show']);
+Route::get('/show',Controllers\Ramen\ShowController::class);
 Route::post('/hash',[HashController::class,'index']);
 Route::get('/hash',function (){
     return view('hash');

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace rameninfo\Domain\Models\TwitterData;
 
 
-final class Query
+final class SearchQuery
 {
     private $query;
 
@@ -14,7 +14,7 @@ final class Query
         $this->query = $query;
     }
 
-    public function of(string $value) :self
+    public static function of(string $value) :self
     {
         return new static($value);
     }

@@ -10,21 +10,25 @@ use Illuminate\Support\Facades\Log;
 use rameninfo\Domain\Models\Ramen\Ramen;
 use rameninfo\Domain\Models\Ramen\RamenId;
 use rameninfo\Domain\Models\Ramen\RamenRepository;
+use rameninfo\Domain\Models\TwitterData\TwitterData;
 use rameninfo\Infrastructure\Eloquent\EloquentRamen;
+use rameninfo\Infrastructure\Eloquent\EloquentTwitterData;
 
 final class EloquentRamenRepository implements RamenRepository
 {
 
     private $eloquentRamen;
+    private $eloquentTwitterData;
 
     public function __construct()
     {
         $this->eloquentRamen = new EloquentRamen();
+        $this->eloquentTwitterData = new EloquentTwitterData();
     }
 
     public function save(Ramen $ramen)
     {
-        $this->eloquentRamen->fill($ramen->toArray())->save();
+        $this->eloquentRamen->create($ramen->toArray());
     }
 
     public function find(string $ramenId)
@@ -33,7 +37,8 @@ final class EloquentRamenRepository implements RamenRepository
         return [
             'ramen' => [
                 $ramenId => [
-                    $ramen
+                    'ramen_data' => $ramen,
+                    'twitter_data' => $ramen->twitter_data
                 ]
             ]
         ];
@@ -46,7 +51,8 @@ final class EloquentRamenRepository implements RamenRepository
         foreach ($ramens as $ramen)
         {
             $ramen_array[$ramen->ramen_id] = [
-                $ramen
+                'ramen_data' => $ramen,
+                'twitter_data' => $ramen->twitter_data
             ];
         }
 
@@ -62,8 +68,10 @@ final class EloquentRamenRepository implements RamenRepository
         if(!$ramenId == null){
             $ramen = EloquentRamen::find($ramenId);
             $ramen->delete();
+            $ramen->twitter_data->delete();
         }else{
             DB::table('ramens')->delete();
+            DB::table('twitter_data')->delete();
         }
         $ramens = EloquentRamen::all();
         $ramen_array = [];

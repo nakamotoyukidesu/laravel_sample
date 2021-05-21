@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace rameninfo\Domain\Models\TwitterData;
 
 
-use twitterinfo\Domain\Models\TwitterData\TwitterId;
-
 final class TwitterData
 {
     private $ramen_id;
@@ -21,7 +19,7 @@ final class TwitterData
     (
         RamenId $ramen_id,
         TwitterId $twitter_id,
-        Query $query,
+        SearchQuery $query,
         AccountName $account_name
     )
     {
@@ -41,7 +39,7 @@ final class TwitterData
         return $this->twitter_id;
     }
 
-    public function query() : Query
+    public function query() : SearchQuery
     {
         return $this->query;
     }

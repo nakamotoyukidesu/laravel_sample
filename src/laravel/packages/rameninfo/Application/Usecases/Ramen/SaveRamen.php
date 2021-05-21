@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use mysql_xdevapi\Exception;
 use rameninfo\Domain\Models\Ramen\Ramen;
 use rameninfo\Domain\Models\Ramen\RamenRepository;
+use rameninfo\Domain\Models\TwitterData\TwitterData;
 
 final class SaveRamen
 {

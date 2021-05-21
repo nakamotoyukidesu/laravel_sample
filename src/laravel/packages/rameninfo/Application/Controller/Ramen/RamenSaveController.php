@@ -8,16 +8,23 @@ namespace rameninfo\Application\Controller\Ramen;
 
 use ArrayObject;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 use rameninfo\Application\Requests\Ramen\RamenSaveRequest;
 use rameninfo\Application\Usecases\Ramen\SaveRamen;
+use rameninfo\Application\Usecases\TwitterData\SaveTwitterData;
+use rameninfo\Domain\Models\Ramen\Ramen;
+use rameninfo\Domain\Models\TwitterData\TwitterData;
 
 final class RamenSaveController
 {
-    public function __invoke(RamenSaveRequest $request, SaveRamen $saveRamen): JsonResponse
+    public function __invoke(RamenSaveRequest $request, SaveRamen $saveRamen, SaveTwitterData $saveTwitterData): JsonResponse
     {
         $ramens = [];
         foreach ($request->saveRamen() as $ramen){
-            $ramens[$ramen->ramen_id()->value()] = $saveRamen($ramen);
+            $ramens[$ramen["ramen_data"]->ramen_id()->value()] = [
+                "ramen_data" => $saveRamen($ramen["ramen_data"]),
+                "twitter_data" => $saveTwitterData($ramen["twitter_data"])
+            ];
         }
         return $this->response($ramens);
     }
@@ -27,15 +34,27 @@ final class RamenSaveController
         $ramen_array = [];
         foreach ($ramens as $ramen)
         {
-            $ramen_array[$ramen->ramen_id()->value()] =
+            $ramen_array[$ramen["ramen_data"]->ramen_id()->value()] =
             [
-                'ramen_id' => $ramen->ramen_id()->value(),
-                'name' => $ramen->name()->value(),
-                'category' => $ramen->category()->value(),
-                'image_url' => $ramen->image_url()->value(),
-                'address' => $ramen->address()->value(),
+                "ramen_data" => [
+                    'ramen_id' => $ramen["ramen_data"]->ramen_id()->value(),
+                    'name' => $ramen["ramen_data"]->name()->value(),
+                    'category' => $ramen["ramen_data"]->category()->value(),
+                    'image_url' => $ramen["ramen_data"]->image_url()->value(),
+                    'address' => $ramen["ramen_data"]->address()->value(),
+                ],
+                "twitter_data" => [
+                    "ramen_id" => $ramen["twitter_data"]->ramen_id()->value(),
+                    "twitter_id" => $ramen["twitter_data"]->twitter_id()->value(),
+                    "search_query" => $ramen["twitter_data"]->query()->value(),
+                    "account_name" => $ramen["twitter_data"]->account_name()->value()
+                ]
+
             ];
         }
         return response()->json($ramen_array);
     }
+
+
+
 }

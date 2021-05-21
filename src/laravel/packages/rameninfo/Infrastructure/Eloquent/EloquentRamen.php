@@ -17,6 +17,10 @@ final class EloquentRamen extends Model
         "ramen_id" => "string",
     ];
 
+    public $incrementing = false;
+
+    protected $keyType = "string";
+
     protected $fillable = [
         'ramen_id',
         'name',
@@ -24,5 +28,9 @@ final class EloquentRamen extends Model
         'image_url',
         'address',
     ];
+
+    public function twitter_data(){
+        return $this->hasOne(EloquentTwitterData::class, "ramen_id","ramen_id");
+    }
 
 }

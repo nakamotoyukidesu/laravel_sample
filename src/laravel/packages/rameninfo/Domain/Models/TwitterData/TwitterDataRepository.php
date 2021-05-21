@@ -6,5 +6,11 @@ namespace rameninfo\Domain\Models\TwitterData;
 
 interface TwitterDataRepository
 {
+    public function save(TwitterData $twitterData);
 
+    public function find(string $ramen_id);
+
+    public function show();
+
+    public function delete();
 }

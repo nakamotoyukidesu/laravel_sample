@@ -14,7 +14,7 @@ final class RamenId
         $this->ramen_id = $ramen_id;
     }
 
-    public function of(string $value) :self
+    public static function of(string $value) :self
     {
         return new static($value);
     }

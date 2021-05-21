@@ -14,7 +14,7 @@ final class TwitterId
         $this->twitter_id = $twitter_id;
     }
 
-    public function of(string $value) :self
+    public static function of(string $value) :self
     {
         return new static($value);
     }

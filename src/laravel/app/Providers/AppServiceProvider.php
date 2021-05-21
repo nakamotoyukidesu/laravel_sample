@@ -4,7 +4,9 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use rameninfo\Domain\Models\Ramen\RamenRepository;
+use rameninfo\Domain\Models\TwitterData\TwitterDataRepository;
 use rameninfo\Infrastructure\Repositories\Domain\Eloquent\EloquentRamenRepository;
+use rameninfo\Infrastructure\Repositories\Domain\Eloquent\EloquentTwitterDataRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -16,6 +18,7 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(RamenRepository::class, EloquentRamenRepository::class);
+        $this->app->bind(TwitterDataRepository::class, EloquentTwitterDataRepository::class);
     }
 
     /**

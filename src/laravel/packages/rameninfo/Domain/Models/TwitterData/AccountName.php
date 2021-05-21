@@ -14,7 +14,7 @@ final class AccountName
         $this->account_name = $account_name;
     }
 
-    public function of(string $value) :self
+    public static function of(string $value) :self
     {
         return new static($value);
     }

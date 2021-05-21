@@ -6,6 +6,7 @@ use App\Ramen;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use rameninfo\Infrastructure\Eloquent\EloquentRamen;
 
 class RamenController extends Controller
 {
@@ -41,7 +42,7 @@ class RamenController extends Controller
     }
 
     public function show(){
-        $ramen = new Ramen();
+        $ramen = new EloquentRamen();
         $ramen_data = $ramen->all();
         return view('ramen.show',compact('ramen_data'));
     }

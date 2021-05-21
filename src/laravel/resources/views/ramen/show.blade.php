@@ -1,27 +1,42 @@
 @extends('layouts.app')
 
 @section('content')
-    <table border="1" style="margin: 0px 10px 0px 10px">
-        <tr>
-            <th>ツイッターID</th>
-            <th>名前</th>
-            <th>カテゴリ</th>
-            <th>ラーメン画像</th>
-            <th>住所</th>
-            <th>クエリ</th>
-            <th>アカウント名</th>
-            <th></th>
-        </tr>
-        @foreach($ramen_data as  $data)
+        @if($ramen_array != null)
+            <div class="col-12">
+                <div class="col-8">ramenテーブルに保存されている情報の件数は</div>
+                <div class="col-4">{{ count($ramen_array)}}</div>
+            </div>
+        @else
+            <p class="col-12">ramensテーブルにデータが保存されていません</p>
+        @endif
+    <table class="table">
+        <thead>
             <tr>
-                <td>{{ $data['twitter_id'] }}</td>
-                <td>{{ $data['name'] }}</td>
-                <td>{{ $data['category'] }}</td>
-                <td>{{ $data['image_url'] }}</td>
-                <td>{{ $data['address'] }}</td>
-                <td>{{ $data['query'] }}</td>
-                <td>{{ $data['account_name'] }}</td>
+                <th scope="col">ID</th>
+                <th scope="col">店名</th>
+                <th scope="col">カテゴリ</th>
+                <th scope="col">ラーメン画像URL</th>
+                <th scope="col">住所</th>
+                <th scope="col">検索クエリ</th>
+                <th scope="col">アカウント名</th>
+                <th scope="col">ツイッターID</th>
             </tr>
-        @endforeach
+        </thead>
+        <tbody>
+        @if($ramen_array != null)
+            @foreach($ramen_array as $data)
+                <tr>
+                    <td>{{$data["ramen_id"]}}</td>
+                    <td>{{$data["name"]}}</td>
+                    <td>{{$data["category"]}}</td>
+                    <td>{{$data["image_url"]}}</td>
+                    <td>{{$data["address"]}}</td>
+                    <td>{{$data["search_query"]}}</td>
+                    <td>{{$data["account_name"]}}</td>
+                    <td>{{$data["twitter_id"]}}</td>
+                </tr>
+            @endforeach
+        @endif
+        </tbody>
     </table>
 @endsection
