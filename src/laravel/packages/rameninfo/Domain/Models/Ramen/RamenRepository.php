@@ -15,4 +15,6 @@ interface RamenRepository {
     public function show();
 
     public function delete(string $ramenId=null);
+
+    public function edit(Ramen $ramen);
 }

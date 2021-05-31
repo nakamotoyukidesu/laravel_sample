@@ -21,7 +21,7 @@ final class TwitterDataSaveRequest extends ApiRequest implements Requests
         return [];
     }
 
-    public function saveTwitterData(array $ramen): array
+    public function saveTwitterData(): array
     {
         $data_array = array();
         if (!$this->hasFile('json_array')){
@@ -39,6 +39,18 @@ final class TwitterDataSaveRequest extends ApiRequest implements Requests
         }else{
             $json_php = file_get_contents($this->file('json_array')->getRealPath());
             $twitter_data_array = json_decode($json_php);
+            foreach ($twitter_data_array as $data){
+                    $twitter_data = new TwitterData(
+                        RamenId::of($data->ramen_id),
+                        TwitterId::of($data->twitter_id),
+                        SearchQuery::of($data->search_query),
+                        AccountName::of($data->account_name)
+                    );
+                $data_array[$twitter_data->ramen_id()->value()] = array(
+                    "twitter_data" => $twitter_data
+                );
+            }
+            return $data_array;
         }
     }
 

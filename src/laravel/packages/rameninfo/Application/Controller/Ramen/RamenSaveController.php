@@ -21,10 +21,17 @@ final class RamenSaveController
     {
         $ramens = [];
         foreach ($request->saveRamen() as $ramen){
-            $ramens[$ramen["ramen_data"]->ramen_id()->value()] = [
-                "ramen_data" => $saveRamen($ramen["ramen_data"]),
-                "twitter_data" => $saveTwitterData($ramen["twitter_data"])
-            ];
+            if($ramen["twitter_data"] != null){
+                $ramens[$ramen["ramen_data"]->ramen_id()->value()] = [
+                    "ramen_data" => $saveRamen($ramen["ramen_data"]),
+                    "twitter_data" => "何も値がありません"
+                ];
+            }else{
+                $ramens[$ramen["ramen_data"]->ramen_id()->value()] = [
+                    "ramen_data" => $saveRamen($ramen["ramen_data"]),
+                    "twitter_data" => $saveTwitterData($ramen["twitter_data"])
+                ];
+            }
         }
         return $this->response($ramens);
     }
@@ -34,6 +41,19 @@ final class RamenSaveController
         $ramen_array = [];
         foreach ($ramens as $ramen)
         {
+            if($ramen["twitter_data"] != null){
+                $ramen_array[$ramen["ramen_data"]->ramen_id()->value()] =
+                    [
+                        "ramen_data" => [
+                            'ramen_id' => $ramen["ramen_data"]->ramen_id()->value(),
+                            'name' => $ramen["ramen_data"]->name()->value(),
+                            'category' => $ramen["ramen_data"]->category()->value(),
+                            'image_url' => $ramen["ramen_data"]->image_url()->value(),
+                            'address' => $ramen["ramen_data"]->address()->value(),
+                        ],
+                        "twitter_data" => "何も値が入っていません"
+                    ];
+            }
             $ramen_array[$ramen["ramen_data"]->ramen_id()->value()] =
             [
                 "ramen_data" => [
@@ -49,7 +69,6 @@ final class RamenSaveController
                     "search_query" => $ramen["twitter_data"]->query()->value(),
                     "account_name" => $ramen["twitter_data"]->account_name()->value()
                 ]
-
             ];
         }
         return response()->json($ramen_array);

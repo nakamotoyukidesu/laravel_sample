@@ -4,6 +4,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use rameninfo\Application\Controller\Ramen\RamenDeleteController;
+use rameninfo\Application\Controller\Ramen\RamenEditController;
 use rameninfo\Application\Controller\Ramen\RamenFindController;
 use rameninfo\Application\Controller\Ramen\RamenSaveController;
 use rameninfo\Application\Controller\Ramen\RamenShowController;
@@ -32,6 +33,7 @@ Route::group(['prefix' => 'ramen', 'as' => 'ramen.'], function (){
     Route::get('/find/{ramen_id}', RamenFindController::class)->name('find');
     Route::get('/show', RamenShowController::class)->name('show');
     Route::delete('/delete', RamenDeleteController::class)->name('delete');
+    Route::get('edit/{ramen_id}', RamenEditController::class)->name('edit');
 });
 
 Route::group(['prefix' => 'twitterdata' , 'as' => 'twitterdata.'],function (){

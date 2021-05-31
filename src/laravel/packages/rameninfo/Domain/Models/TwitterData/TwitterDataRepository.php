@@ -13,4 +13,6 @@ interface TwitterDataRepository
     public function show();
 
     public function delete();
+
+    public function edit(TwitterData $twitterData);
 }

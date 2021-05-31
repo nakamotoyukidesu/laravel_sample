@@ -88,4 +88,14 @@ final class EloquentRamenRepository implements RamenRepository
             ]
         ];
     }
+
+    public function edit(Ramen $ramen)
+    {
+        $eloquent_ramen = EloquentRamen::find($ramen->ramen_id()->value());
+        $eloquent_ramen->name = $ramen->name()->value();
+        $eloquent_ramen->category = $ramen->category()->value();
+        $eloquent_ramen->image_url = $ramen->image_url()->value();
+        $eloquent_ramen->address = $ramen->address()->value();
+        $eloquent_ramen->save();
+    }
 }
