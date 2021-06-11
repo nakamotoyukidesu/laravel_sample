@@ -27,7 +27,9 @@
                 @if($ramen_array != null)
                     @foreach($ramen_array as $data)
                         <tr>
-                            <td>{{$data["ramen_id"]}}</td>
+                            <td>
+                                <span>{{$data["ramen_id"]}}</span>
+                            </td>
                             <td>{{$data["name"]}}</td>
                             <td>{{$data["category"]}}</td>
                             <td>{{$data["image_url"]}}</td>
@@ -36,8 +38,34 @@
                             <td>{{$data["account_name"]}}</td>
                             <td>{{$data["twitter_id"]}}</td>
 {{--                            <td><a href="{!! url("api/ramen/edit/{$data["ramen_id"]}") !!}">編集</a></td>--}}
-                            <td><button type="button" class="btn btn-primary" id="ramen_edit_button">編集</button></td>
+                            <td><button type="button" class="btn btn-primary" id="ramen_edit_button" data-toggle="collapse" href="#{{$data["ramen_id"]}}">編集</button></td>
                             <td><button type="button" class="btn btn-primary">削除</button></td>
+                        </tr>
+                        <tr class="collapse" id="{{$data["ramen_id"]}}">
+                            <td>
+                                <input type="text" class="form-control" placeholder="{{$data["ramen_id"]}}">
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" placeholder="{{$data["name"]}}">
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" placeholder="{{$data["category"]}}">
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" placeholder="{{$data["image_url"]}}">
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" placeholder="{{$data["address"]}}">
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" placeholder="{{$data["search_query"]}}">
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" placeholder="{{$data["account_name"]}}">
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" placeholder="{{$data["twitter_id"]}}">
+                            </td>
                         </tr>
                     @endforeach
                 @endif

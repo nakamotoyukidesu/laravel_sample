@@ -85,4 +85,13 @@ final class EloquentTwitterDataRepository implements TwitterDataRepository
             ]
         ];
     }
+
+    public function edit(TwitterData $twitterData)
+    {
+        $eloquent_twitter_data = EloquentTwitterData::find($twitterData->ramen_id()->value());
+        $eloquent_twitter_data->twitter_id = $twitterData->twitter_id()->value();
+        $eloquent_twitter_data->query = $twitterData->query()->value();
+        $eloquent_twitter_data->account_name = $twitterData->account_name()->value();
+        $eloquent_twitter_data->save();
+    }
 }

@@ -6,3 +6,10 @@
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+
+@media (min-width: 1440px) {
+    .container-xl, .container-lg, .container-md, .container-sm, .container {
+        max-width: 1400px;
+    }
+}
