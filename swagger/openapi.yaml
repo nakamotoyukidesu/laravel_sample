@@ -1,0 +1,13 @@
+openapi: 3.0.0
+info:
+  title: RameninfoApi
+  description: ラーメン屋のキュレーションサイト
+  version: 1.0.0
+paths:
+  /save:
+    post:
+      summary:
+        データ保存
+      responses:
+        '200':
+          description: Created

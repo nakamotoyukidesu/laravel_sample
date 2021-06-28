@@ -1,9 +1,31 @@
 openapi: 3.0.0
 info:
-  title: RamenInfo
-  description: ラーメン情報の保存・取得などを実装するエンドポイント
-  termsOfService: http
+  title: RameninfoApi
+  description: ラーメン屋のキュレーションサイト
   version: 1.0.0
 paths:
-components:
-
+  /save:
+    post:
+      summary:
+        データ保存
+      parameters:
+      - in: header
+        name: "name"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Created
+          schema:
+            type: "object"
+          properties:
+            ramen_id:
+              type: "integer"
+              format: "int64"
+            name:
+              type: "string"
+              example: "陽はまたのぼる"
+              category:
+                type: "string"
+                example: "煮干し"
