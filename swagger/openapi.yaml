@@ -3,11 +3,571 @@ info:
   title: RameninfoApi
   description: ラーメン屋のキュレーションサイト
   version: 1.0.0
+servers:
+  - url: https://{host}:{port}/api
+    description: 開発用ラーメンインフォAPI
+    variables:
+      host:
+        default: localhost
+      port:
+        default: '80'
 paths:
-  /save:
+  /ramen/save:
     post:
-      summary:
-        データ保存
+      tags:
+        - ラーメンデータに関するエンドポイント
+      summary: ラーメンデータ保存
+      description: ラーメン屋のデータを新規保存します
+      parameters:
+        - in: header
+          name: name
+          description: ラーメン屋の店名
+          required: true
+          schema:
+            type: string
+        - in: header
+          name: category
+          description: ラーメン屋のカテゴリー
+          required: true
+          schema: 
+            type: string
+        - in: header
+          name: image_url
+          description: ラーメン屋の画像URL
+          required: true
+          schema: 
+            type: string
+        - in: header
+          name: address
+          description: ラーメン屋の住所
+          required: true
+          schema:
+            type: string
+        - in: header
+          name: twitter_id
+          description: ラーメン屋のツイッターアカウントID
+          required: false
+          schema:
+            type: string
+        - in: header
+          name: search_query
+          description: ラーメン屋の検索クエリ
+          required: false
+          schema:
+            type: string
+        - in: header
+          name: account_name
+          description: ラーメン屋のアカウント名
+          required: false
+          schema:
+            type: string
       responses:
-        '200':
-          description: Created
+        200:
+          description: 成功時のレスポンス
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/old_ramen_data_array"
+  /ramen/show:
+    get:
+      tags:
+        - ラーメンデータに関するエンドポイント
+      summary: 全ラーメンデータ取得
+      description: データベースに保存されているラーメンデータを配列で返します
+      parameters:
+        - in: header
+          name: extentions
+          description: レスポンスにtwitter_dataを含めるかどうかを入れるフィールド
+          required: false
+          example: twitter.fields
+          schema:
+            type: string
+      responses:
+        200:
+          description: 成功時のレスポンス
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/ramen_data_array"
+                  - $ref: "#/components/schemas/ramen_data_array_extention"
+              examples:
+                response1:
+                  summary: 通常のレスポンス
+                  value:
+                    success1:
+                      message_title: Response1
+                      message: 通常のレスポンスのexampleです
+                response2:
+                  summary: twitter_dataも取得した場合のレスポンス
+                  value:
+                    success1:
+                      message_title: Response2
+                      message: twitter_dataも取得した場合のレスポンスのexampleです
+  /ramen/find/{ramen_id}:
+    get:
+      tags:
+        - ラーメンデータに関するエンドポイント
+      summary: 1件ラーメンデータ取得
+      description: ramen_idと合致したラーメンデータを1件取得
+      parameters:
+        - in: path
+          name: ramen_id
+          description: データベースに保存されているいずれかのラーメンデータのuuid
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: 成功時のレスポンス
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ramen_data"
+  /ramen/edit/{ramen_id}:
+    post:
+      tags:
+        - ラーメンデータに関するエンドポイント
+      summary: 1件ラーメンデータ更新
+      description: ramen_idと合致したラーメンデータを1件更新
+      parameters:
+        - in: path
+          name: ramen_id
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - in: header
+          name: name
+          description: ラーメン屋の店名
+          required: true
+          schema:
+            type: string
+        - in: header
+          name: category
+          description: ラーメン屋のカテゴリー
+          required: true
+          schema: 
+            type: string
+        - in: header
+          name: image_url
+          description: ラーメン屋の画像URL
+          required: true
+          schema: 
+            type: string
+        - in: header
+          name: address
+          description: ラーメン屋の住所
+          required: true
+          schema:
+            type: string
+        - in: header
+          name: twitter_id
+          description: ラーメン屋のツイッターアカウントID
+          required: false
+          schema:
+            type: string
+        - in: header
+          name: search_query
+          description: ラーメン屋の検索クエリ
+          required: false
+          schema:
+            type: string
+        - in: header
+          name: account_name
+          description: ラーメン屋のアカウント名
+          required: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: 成功時のレスポンス
+          content: 
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ramen_data"
+  /ramen/delete:
+    delete:
+      tags:
+        - ラーメンデータに関するエンドポイント
+      summary: ラーメンデータ削除
+      description: ラーメン屋のデータを全件または1件削除します
+      parameters:
+        - in: header
+          name: ramen_id
+          description: データベースに保存されているいずれかのラーメンデータのuuid
+          required: false
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: 成功時のレスポンス
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ramen_data_array"
+  /twitterdata/save/{ramen_id}:
+    post:
+      tags:
+        - ツイッターデータに関するエンドポイント
+      summary: ツイッターデータ保存
+      description: ラーメン屋のツイッターデータを新規保存します
+      parameters:
+        - in: path
+          name: ramen_id
+          description: ramen_idと合致したラーメンデータに紐付けてツイッターデータを保存
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - in: header
+          name: twitter_id
+          description: ツイッターのID
+          required: true
+          schema:
+            type: string
+        - in: header
+          name: search_query
+          description: ツイッターの検索クエリ
+          required: true
+          schema:
+            type: string
+        - in: header
+          name: account_name
+          description: ツイッターのアカウント名
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: 成功時のレスポンス
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/twitter_data"
+  /twitterdata/show:
+    get:
+      tags:
+        - ツイッターデータに関するエンドポイント
+      summary: 全ツイッターデータ取得
+      description: データベースに保存されているツイッターデータを配列で返します
+      responses:
+        200:
+          description: 成功時のレスポンス
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/twitter_data_array"
+  /twitterdata/find/{ramen_id}:
+    get:
+      tags:
+        - ツイッターデータに関するエンドポイント
+      summary: 1件ツイッターデー取得
+      description: ramen_idと合致したツイッターデータを1件取得
+      parameters:
+        - in: path
+          name: ramen_id
+          description: データベースに保存されているいずれかのツイッターデータのuuid
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: 成功時のレスポンス
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/twitter_data"
+  /twitterdata/edit/{ramen_id}:
+    post:
+      tags:
+        - ツイッターデータに関するエンドポイント
+      summary: 1件ツイッターデータ更新
+      description: ramen_idと合致したツイッターデータを1件更新
+      parameters:
+        - in: path
+          name: ramen_id
+          description: ramen_idと合致したラーメンデータに紐付けてツイッターデータを更新
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - in: header
+          name: twitter_id
+          description: ツイッターのID
+          required: true
+          schema:
+            type: string
+        - in: header
+          name: search_query
+          description: ツイッターの検索クエリ
+          required: true
+          schema:
+            type: string
+        - in: header
+          name: account_name
+          description: ツイッターのアカウント名
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: 成功時のレスポンス
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/twitter_data"
+  /twitterdata/delete:
+    delete:
+      tags:
+        - ツイッターデータに関するエンドポイント
+      summary: ツイッターデータ削除
+      description: ツイッターデータを全件または1件削除します
+      parameters:
+        - in: header
+          name: ramen_id
+          description: データベースに保存されているいずれかのツイッターデータのuuid
+          required: false
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: 成功時のレスポンス
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/twitter_data_array"
+
+components:
+  schemas:
+    ramen_data:
+      type: object
+      properties:
+        ramen_id:
+          type: object
+          description: ラーメンデータのramen_idが入る
+          properties:
+            ramen_id:
+              type: string
+              format: uuid
+            name:
+              type: string
+              example: 陽はまたのぼる
+            category:
+              type: string
+              example: 煮干し
+            image_url:
+              type: string
+              format: url
+              example: https://s1.spkimg.com/image/2021/05/30/17/egm12raYLmlk8ZiHIuA2ahssyRhTGVqO.jpg
+            address: 
+              type: string
+              example: 東京都足立区綾瀬２丁目１−４
+    twitter_data:
+      type: object
+      properties:
+        ramen_id:
+          type: object
+          description: ラーメンデータのramen_idが入る
+          properties:
+            ramen_id: 
+              type: string
+              format: uuid
+            twitter_id:
+              type: string
+              format: binary
+              description: 要調査
+            query:
+              type: string
+              example: 陽はまた昇る　煮干し
+            account_name:
+              type: string
+              example: masa_ponkotu
+            created_at:
+              type: string
+              format: date-time
+            updated_at:
+              type: string
+              format: date-time
+    ramen_data_array:
+      type: object
+      properties:
+        ramen_data:
+          type: array
+          items:
+            type: object
+            properties:
+              ramen_id:
+                type: object
+                properties:
+                  ramen_id:
+                    type: string
+                    format: uuid
+                  name:
+                    type: string
+                    example: 陽はまた昇る
+                  category:
+                    type: string
+                    example: 煮干し
+                  image_url: 
+                    type: string
+                    format: url
+                    example: https://s1.spkimg.com/image/2021/05/30/17/egm12raYLmlk8ZiHIuA2ahssyRhTGVqO.jpg
+                  address:
+                    type: string
+                    example: 東京都足立区綾瀬２丁目１−４
+                  created_at:
+                    type: string
+                    format: date-time
+                  updated_at:
+                    type: string
+                    format: date-time
+    ramen_data_array_extention:
+      type: object
+      properties:
+        ramen_data:
+          type: array
+          items:
+            type: object
+            properties:
+              ramen_id:
+                type: object
+                properties:
+                  ramen_data:
+                    type: object
+                    properties:
+                      ramen_id:
+                        type: string
+                        format: uuid
+                      name:
+                        type: string
+                        example: 陽はまた昇る
+                      category:
+                        type: string
+                        example: 煮干し
+                      image_url:
+                        type: string
+                        format: url
+                        example: https://s1.spkimg.com/image/2021/05/30/17/egm12raYLmlk8ZiHIuA2ahssyRhTGVqO.jpg
+                      address:
+                        type: string
+                        example: 東京都足立区綾瀬２丁目１−４
+                      created_at:
+                        type: string
+                        format: date-time
+                      updated_at:
+                        type: string
+                        format: date-time
+                  twitter_data:
+                    type: object
+                    properties:
+                      ramen_id: 
+                        type: string
+                        format: uuid
+                      twitter_id:
+                        type: string
+                        format: binary
+                        description: 要調査
+                      query:
+                        type: string
+                        example: 陽はまた昇る　煮干し
+                      account_name:
+                        type: string
+                        example: masa_ponkotu
+                      created_at:
+                        type: string
+                        format: date-time
+                      updated_at:
+                        type: string
+                        format: date-time
+                  
+    twitter_data_array:
+      type: object
+      properties:
+        twitter_data:
+          type: array
+          items:
+            type: object
+            properties:
+              ramen_id:
+                type: object
+                properties:
+                  ramen_id: 
+                    type: string
+                    format: uuid
+                  twitter_id:
+                    type: string
+                    format: binary
+                    description: 要調査
+                  query:
+                    type: string
+                    example: 陽はまた昇る　煮干し
+                  account_name:
+                    type: string
+                    example: masa_ponkotu
+                  created_at:
+                    type: string
+                    format: date-time
+                  updated_at:
+                    type: string
+                    format: date-time
+    old_ramen_data_array:
+      type: object
+      properties:
+        ramens:
+          type: object
+          properties:
+            ramen_id:
+              type: object
+              properties:
+                ramen_data:
+                  type: object
+                  properties:
+                    ramen_id:
+                      type: string
+                      format: uuid
+                    name:
+                      type: string
+                      example: 陽はまた昇る
+                    category:
+                      type: string
+                      example: 煮干し
+                    image_url: 
+                      type: string
+                      format: url
+                      example: https://s1.spkimg.com/image/2021/05/30/17/egm12raYLmlk8ZiHIuA2ahssyRhTGVqO.jpg
+                    address:
+                      type: string
+                      example: 東京都足立区綾瀬２丁目１−４
+                    created_at:
+                      type: string
+                      format: date-time
+                    updated_at:
+                      type: string
+                      format: date-time
+                twitter_data:
+                  type: object
+                  properties:
+                    ramen_id: 
+                      type: string
+                      format: uuid
+                    twitter_id:
+                      type: string
+                      format: binary
+                      description: 要調査
+                    query:
+                      type: string
+                      example: 陽はまた昇る　煮干し
+                    account_name:
+                      type: string
+                      example: masa_ponkotu
+                    created_at:
+                      type: string
+                      format: date-time
+                    updated_at:
+                      type: string
+                      format: date-time

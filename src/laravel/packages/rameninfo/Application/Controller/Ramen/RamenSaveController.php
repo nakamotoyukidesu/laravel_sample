@@ -21,10 +21,10 @@ final class RamenSaveController
     {
         $ramens = [];
         foreach ($request->saveRamen() as $ramen){
-            if($ramen["twitter_data"] != null){
+            if(is_null($ramen["twitter_data"])){
                 $ramens[$ramen["ramen_data"]->ramen_id()->value()] = [
                     "ramen_data" => $saveRamen($ramen["ramen_data"]),
-                    "twitter_data" => "何も値がありません"
+                    "twitter_data" => null
                 ];
             }else{
                 $ramens[$ramen["ramen_data"]->ramen_id()->value()] = [
@@ -41,7 +41,7 @@ final class RamenSaveController
         $ramen_array = [];
         foreach ($ramens as $ramen)
         {
-            if($ramen["twitter_data"] != null){
+            if(is_null($ramen["twitter_data"])){
                 $ramen_array[$ramen["ramen_data"]->ramen_id()->value()] =
                     [
                         "ramen_data" => [
@@ -53,25 +53,29 @@ final class RamenSaveController
                         ],
                         "twitter_data" => "何も値が入っていません"
                     ];
+            }else{
+                $ramen_array[$ramen["ramen_data"]->ramen_id()->value()] =
+                    [
+                        "ramen_data" => [
+                            'ramen_id' => $ramen["ramen_data"]->ramen_id()->value(),
+                            'name' => $ramen["ramen_data"]->name()->value(),
+                            'category' => $ramen["ramen_data"]->category()->value(),
+                            'image_url' => $ramen["ramen_data"]->image_url()->value(),
+                            'address' => $ramen["ramen_data"]->address()->value(),
+                        ],
+                        "twitter_data" => [
+                            "ramen_id" => $ramen["twitter_data"]->ramen_id()->value(),
+                            "twitter_id" => $ramen["twitter_data"]->twitter_id()->value(),
+                            "search_query" => $ramen["twitter_data"]->query()->value(),
+                            "account_name" => $ramen["twitter_data"]->account_name()->value()
+                        ]
+                    ];
             }
-            $ramen_array[$ramen["ramen_data"]->ramen_id()->value()] =
-            [
-                "ramen_data" => [
-                    'ramen_id' => $ramen["ramen_data"]->ramen_id()->value(),
-                    'name' => $ramen["ramen_data"]->name()->value(),
-                    'category' => $ramen["ramen_data"]->category()->value(),
-                    'image_url' => $ramen["ramen_data"]->image_url()->value(),
-                    'address' => $ramen["ramen_data"]->address()->value(),
-                ],
-                "twitter_data" => [
-                    "ramen_id" => $ramen["twitter_data"]->ramen_id()->value(),
-                    "twitter_id" => $ramen["twitter_data"]->twitter_id()->value(),
-                    "search_query" => $ramen["twitter_data"]->query()->value(),
-                    "account_name" => $ramen["twitter_data"]->account_name()->value()
-                ]
-            ];
         }
-        return response()->json($ramen_array);
+        $array = [
+            "ramens" => $ramen_array
+            ];
+        return response()->json($array);
     }
 
 

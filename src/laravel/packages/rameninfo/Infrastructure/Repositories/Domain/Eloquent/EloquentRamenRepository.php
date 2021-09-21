@@ -35,32 +35,55 @@ final class EloquentRamenRepository implements RamenRepository
     {
         $ramen = EloquentRamen::find($ramenId);
         return [
-            'ramen' => [
-                $ramenId => [
-                    'ramen_data' => $ramen,
-                    'twitter_data' => $ramen->twitter_data
-                ]
-            ]
+            $ramenId => $ramen
         ];
     }
 
-    public function show()
+    public function show(string $extentions=null)
     {
         $ramens = EloquentRamen::all();
-        $ramen_array = [];
-        foreach ($ramens as $ramen)
-        {
-            $ramen_array[$ramen->ramen_id] = [
-                'ramen_data' => $ramen,
-                'twitter_data' => $ramen->twitter_data
+        if($extentions==null){            
+            $ramen_array = [];
+            foreach ($ramens as $ramen)
+            {
+                $ramen_array[$ramen->ramen_id] = $ramen;
+            }
+            return [
+                'ramen_data' => [
+                    $ramen_array
+                ]
+            ];
+        }elseif($extentions=="twitter.fields"){
+            $ramen_array = [];
+            foreach ($ramens as $ramen)
+            {
+                $ramen_array[$ramen->ramen_id] = [
+                    "ramen_data" => [
+                        "ramen_id" => $ramen["ramen_id"],
+                        "name" => $ramen["name"],
+                        "category" => $ramen["image_url"],
+                        "address" => $ramen["address"],
+                        "created_at" => $ramen["created_at"],
+                        "updated_at" => $ramen["updated_at"]
+                    ],
+                    "twitter_data" => [
+                        "ramen_id" => $ramen->twitter_data["ramen_id"],
+                        "twitter_id" => $ramen->twitter_data["twitter_id"],
+                        "query" => $ramen->twitter_data["query"],
+                        "account_name" => $ramen->twitter_data["account_name"],
+                        "created_at" => $ramen->twitter_data["created_at"],
+                        "updated_at" => $ramen->twitter_data["updated_at"]
+                    ]
+                    ];
+                    // var_dump($ramen->twitter_data);
+            }
+            return [
+                'ramen_data' => [
+                    $ramen_array
+                ]
             ];
         }
-
-        return [
-            'ramens' => [
-                $ramen_array
-            ]
-        ];
+        
     }
 
     public function delete(string $ramenId = null)

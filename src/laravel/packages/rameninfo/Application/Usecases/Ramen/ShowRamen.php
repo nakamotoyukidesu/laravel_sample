@@ -15,8 +15,8 @@ class ShowRamen
         $this->ramenRepo = $ramenRepository;
     }
 
-    public function __invoke()
+    public function __invoke(string $extentions=null)
     {
-        return $this->ramenRepo->show();
+        return $this->ramenRepo->show($extentions);
     }
 }

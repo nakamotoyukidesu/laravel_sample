@@ -81,7 +81,7 @@ services:
     ports:
       - "8083:8080"
     volumes:
-      - ./swagger/openapi.json:/openapi.json
+      - ./swagger/openapi.yaml:/openapi.yaml
     environment:
-      SWAGGER_JSON: /openapi.json
+      SWAGGER_JSON: /openapi.yaml
       # API_URL: ""

@@ -12,7 +12,7 @@ interface RamenRepository {
 
     public function find(string $ramenId);
 
-    public function show();
+    public function show(string $extentions=null);
 
     public function delete(string $ramenId=null);
 

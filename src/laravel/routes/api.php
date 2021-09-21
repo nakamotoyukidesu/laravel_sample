@@ -41,6 +41,7 @@ Route::group(['prefix' => 'twitterdata' , 'as' => 'twitterdata.'],function (){
    Route::get('/find/{ramen_id}', TwitterDataFindController::class)->name('find');
    Route::get('/show', TwitterDataShowController::class)->name('show');
    Route::delete('/delete', TwitterDataDeleteController::class)->name('delete');
+   Route::post('/save',TwitterDataSaveController::class)->name('save');
 });
 
 //Route::group(['middleware' => ['api']],function (){

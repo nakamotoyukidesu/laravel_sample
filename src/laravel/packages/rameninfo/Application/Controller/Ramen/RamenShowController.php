@@ -11,6 +11,6 @@ class RamenShowController
 {
     public function __invoke(RamenShowRequest $request, ShowRamen $showRamen)
     {
-        return $showRamen();
+        return $showRamen($request->extentions);
     }
 }

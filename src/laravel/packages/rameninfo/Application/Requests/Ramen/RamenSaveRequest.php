@@ -39,7 +39,10 @@ final class RamenSaveRequest extends ApiRequest implements Requests
                 RamenImage::of($this->image_url),
                 RamenAddress::of($this->address)
             );
-            $ramens[$ramen->ramen_id()->value()] = $ramen;
+            $ramens[$ramen->ramen_id()->value()] = array(
+                "ramen_data" => $ramen,
+                "twitter_data" => null
+                );
             return $ramens;
         }else{
             $json_php = file_get_contents($this->file('json_array')->getRealPath());
@@ -65,6 +68,7 @@ final class RamenSaveRequest extends ApiRequest implements Requests
                     "twitter_data" => $twitter_data
                 );
             }
+            echo("これはファイルが渡ってきた場合の処理です");
             return $ramens;
         }
     }
