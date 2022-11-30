@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Mockery\Exception;
 use rameninfo\Domain\Models\TwitterData\TwitterData;
 use rameninfo\Domain\Models\TwitterData\TwitterDataRepository;
+use Throwable;
 
 final class SaveTwitterData
 {
@@ -25,7 +26,7 @@ final class SaveTwitterData
             $this->twitterdataRepo->save($twitterData);
             DB::commit();
         }
-        catch (Exception $e){
+        catch (Throwable $e){
             report($e);
             DB::rollBack();
         }

@@ -10,6 +10,7 @@ use mysql_xdevapi\Exception;
 use rameninfo\Domain\Models\Ramen\Ramen;
 use rameninfo\Domain\Models\Ramen\RamenRepository;
 use rameninfo\Domain\Models\TwitterData\TwitterData;
+use Throwable;
 
 final class SaveRamen
 {
@@ -27,7 +28,7 @@ final class SaveRamen
             $this->ramenRepo->save($ramen);
             DB::commit();
         }
-        catch (Exception $e){
+        catch (Throwable $e){
             report($e);
             DB::rollBack();
         }
